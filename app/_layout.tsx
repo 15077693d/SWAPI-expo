@@ -1,39 +1,67 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
+import { COLORS } from "@/constants/colors";
+import { Ionicons } from "@expo/vector-icons";
+import { Stack, Tabs } from "expo-router";
+import React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useReactQueryDevTools } from "@dev-plugins/react-query";
+import { useAsyncStorageDevTools } from "@dev-plugins/async-storage";
+// Create a client
+const queryClient = new QueryClient();
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
+  useReactQueryDevTools(queryClient);
+  useAsyncStorageDevTools();
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <Tabs
+        screenOptions={{
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: COLORS.bg,
+          },
+          headerTintColor: COLORS.text,
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          tabBarStyle: {
+            backgroundColor: COLORS.containerBg,
+            borderTopWidth: 1,
+            borderTopColor: COLORS.inactive,
+          },
+          tabBarActiveTintColor: COLORS.text,
+          tabBarInactiveTintColor: COLORS.inactive,
+        }}
+      >
+        <Tabs.Screen name="index" options={{ href: null }} />
+        <Tabs.Screen
+          name="film"
+          options={{
+            headerShown: false,
+            title: "Film",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="film-outline" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="favorite"
+          options={{
+            title: "All Favorite",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="star-outline" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="people"
+          options={{
+            title: "All People",
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="people-outline" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tabs>
+    </QueryClientProvider>
   );
 }
