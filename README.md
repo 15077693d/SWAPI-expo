@@ -1,50 +1,70 @@
-# Welcome to your Expo app 👋
+# React Native Learning #1 Summary
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<img src="./readme.gif" width="200" alt="Infinite Query Demo"/>
 
-## Get started
+## 1. useInfiniteQuery
 
-1. Install dependencies
+- Handles pagination in React Query
+- Key components: `queryFn`, `getNextPageParam`, `initialPageParam`
+- Access data through `data.pages`
+- Provides utilities: `fetchNextPage`, `hasNextPage`, `isFetchingNextPage`
+- Refresh handling requires proper cache invalidation
+- Works well with FlatList for infinite scrolling
 
-   ```bash
-   npm install
-   ```
+## 2. React Native FlatList
 
-2. Start the app
+- Efficient list rendering component
+- Key props:
+  - `data`: Array of items to render
+  - `renderItem`: Component for each item
+  - `keyExtractor`: Unique key for items
+  - `onEndReached`: Load more data
+  - `refreshControl`: Pull-to-refresh
+- Performance optimizations:
+  - `removeClippedSubviews`
+  - `getItemLayout`
+  - `windowSize`
+  - `maxToRenderPerBatch`
 
-   ```bash
-    npx expo start
-   ```
+## 3. Async Storage
 
-In the output, you'll find options to open the app in a
+- Key-value storage system for React Native
+- Async operations with `getItem`, `setItem`, `removeItem`
+- Alternative: MMKV for better performance
+- Common uses:
+  - Caching
+  - User preferences
+  - Authentication tokens
+  - Offline data
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 4. Expo Router
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- File-based routing system
+- Key features:
+  - Nested navigation
+  - Dynamic routes
+  - URL patterns
+  - Deep linking
+- File structure:
+  - `app/` directory for routes
+  - `_layout.tsx` for layouts
+  - Dynamic routes with `[param].tsx`
+  - Groups with `(group)`
+- Navigation:
+  - `useRouter()`
+  - `Link` component
+  - `Redirect` component
 
-## Get a fresh project
+## Key Takeaways
 
-When you're ready, run:
+- Combine useInfiniteQuery with FlatList for efficient infinite scrolling
+- Use MMKV over AsyncStorage for better performance
+- Expo Router provides a modern, file-based routing solution
+- Performance optimization is crucial for smooth user experience
 
-```bash
-npm run reset-project
-```
+## Common Patterns
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Pull-to-refresh implementation
+- Infinite scroll with loading states
+- Persistent storage strategies
+- Type-safe routing with TypeScript
